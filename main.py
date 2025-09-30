@@ -27,6 +27,7 @@ def login():
         return err.strip()
 
     urllogin = f'{baseurl}{logincon}?{numurl}&{pasurl}'
+    return urllogin
     try:
         reslogin = requests.get(urllogin)
         datlogin = reslogin.json()
