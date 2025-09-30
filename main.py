@@ -1,7 +1,6 @@
 from flask import Flask, request
 import os
 import requests
-#import traceback
 app = Flask(__name__)
 
 @app.route('/')
@@ -11,9 +10,12 @@ def login():
 	pas = request.args.get('pas')
 	mfaid = request.args.get('mfaid')
 	baseurl = 'https://www.call2all.co.il/ym/api/'
-	logincon = 'Login'
+	logincom = 'Login?'
 	numurl = f'username={num}'
-	pasurl = f'password={pas}'
+	pasurl = f'&password={pas}'
+	mfacom = 'MFASession?token='
+	sendact = f'&action=sendMFA&mfaId={mfaid}&mfaSendType=EMAIL'
+	validact = '&action=validMFA&mfaCode='
 	err = ''
 
 	if not num:
@@ -25,18 +27,55 @@ def login():
 	if err:
 		return err.strip()
 
-	urllogin = f'{baseurl}{logincon}?{numurl}&{pasurl}'
+	urllogin = baseurl + logincom + numurl + pasurl
 	
 	try:
 		reslogin = requests.get(urllogin)
 		datlogin = reslogin.json()
 		token = datlogin.get('token')
+
 		if token:
-			return token
+
+			urlsend = baseurl + mfacom + token + sendact
+
+			try:
+				ressend = requests.get(urlsend)
+				datsend = ressend.json()
+				oksend = datsend.get('message')
+
+				if oksend == 'the code send. please valid the code':
+
+					urlcode = 'ana-aref nisht'
+
+					try:
+						code = requsts.get(urlcode)
+
+						if code:
+
+							urlvalid = baseurl + mfacom + token + validact + code
+
+							try:
+
+
+								if:
+
+								
+
+							except:
+								
+
+						return 'No Code Received'
+
+					except:
+						return 'no code received'
+
+				return 'No Send Received'
+
+			except:
+				return 'no send received'
+
 		return 'No Token Received'
 
-#	except Exception as e:
-#		bug = f"Error type: {type(e).__name__}\nError message: {str(e)}\nTraceback: {traceback.format_exc()}"
-#		return bug
 	except:
 		return 'no token received'
+
