@@ -12,4 +12,4 @@ def login():
     loginurl = 'Login'
     numurl = 'username={num}'
     pasurl = 'password={pas}'
-    return f'{baseurl}{loginurl}?{numurl}&{password}'
+    return f'{baseurl}{loginurl}?{numurl}&{pasurl}'
