@@ -9,7 +9,7 @@ def login():
     pas = request.args.get('pas')
     mfaid = request.args.get('mfaid')
     baseurl = 'https://www.call2all.co.il/ym/api/'
-    loginurl = 'Login'
+    logincon = 'Login'
     numurl = f'username={num}'
     pasurl = f'password={pas}'
     err = ''
@@ -26,4 +26,13 @@ def login():
     if err:
         return err.strip()
 
-    return f'{baseurl}{loginurl}?{numurl}&{pasurl}'
+    urllogin = f'{baseurl}{logincon}?{numurl}&{pasurl}'
+    try:
+        reslogin = requests.get(urllogin)
+        datlogin = reslogin.json()
+        token = datlogin.get('token')
+        return token
+
+    except:
+        return 'no token received'
+        
