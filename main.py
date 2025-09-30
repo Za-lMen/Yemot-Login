@@ -1,6 +1,7 @@
 from flask import Flask, request
 import os
 import requests
+import time
 app = Flask(__name__)
 
 @app.route('/')
@@ -45,17 +46,16 @@ def login():
 
 				if oksend == 'the code send. please valid the code':
 
-					urlcode = '??????????'
-
 					try:
-						code = requsts.get(urlcode)
+                                                
+						code = mfaCode()
 
-						if code.isdigit() and len(code) == 6:
+						if code:
 
 							urlvalid = baseurl + mfacom + token + validact + code
 
 							try:
-								resvalid = requsts.get(urlvalid)
+								resvalid = requests.get(urlvalid)
 								datvalid = resvalid.json()
 								okvalid = datvalid.get('mfa_valid_status')
 
@@ -83,3 +83,25 @@ def login():
 	except:
 		return 'no token received'
 
+def mfaCode():
+    url = 'myMfaSenderApp' # placeholder
+    timeout = 30
+    start = time.time()
+    
+    while time.time() - start < timeout:
+        
+        try:
+            
+            rescode = requests.get(url)
+            code = rescode.text.strip()
+            
+            if code.isdigit() and len(code) == 6:
+                
+                return code
+
+        except:
+            continue
+        
+        time.sleep(1)
+                        
+    return
