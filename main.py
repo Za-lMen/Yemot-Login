@@ -10,6 +10,6 @@ def login():
     mfaid = request.args.get('mfaid', 'No mfaid param')
     baseurl = 'https://www.call2all.co.il/ym/api/'
     loginurl = 'Login'
-    numurl = 'username={num}'
-    pasurl = 'password={pas}'
+    numurl = f'username={num}'
+    pasurl = f'password={pas}'
     return f'{baseurl}{loginurl}?{numurl}&{pasurl}'
