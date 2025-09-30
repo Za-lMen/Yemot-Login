@@ -1,10 +1,15 @@
 from flask import Flask, request
 import os
 app = Flask(__name__)
+
 @app.route('/')
-def reverse_text():
-    # קבל את הפרמטר 'text' מה-URL (למשל, ?text=hello)
-    text = request.args.get('text', 'No text provided')
-    # החזר את הטקסט הפוך
-    reversed_text = text[::-1]
-    return f'Reversed text: {reversed_text}'
+
+def login():
+    num = request.args.get('num', 'No num param')
+    pas = request.args.get('pas', 'No pas param')
+    mfaid = request.args.get('mfaid', 'No mfaid param')
+    baseurl = 'https://www.call2all.co.il/ym/api/'
+    loginurl = 'Login'
+    numurl = 'username={num}'
+    pasurl = 'password={pas}'
+    return f'{baseurl}{loginurl}?{numurl}&{password}'
