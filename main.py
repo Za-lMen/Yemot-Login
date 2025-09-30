@@ -45,24 +45,28 @@ def login():
 
 				if oksend == 'the code send. please valid the code':
 
-					urlcode = 'ana-aref nisht'
+					urlcode = '??????????'
 
 					try:
 						code = requsts.get(urlcode)
 
-						if code:
+						if code.isdigit() and len(code) == 6:
 
 							urlvalid = baseurl + mfacom + token + validact + code
 
 							try:
+								resvalid = requsts.get(urlvalid)
+								datvalid = resvalid.json()
+								okvalid = datvalid.get('mfa_valid_status')
 
+								if okvalid == 'VALID':
 
-								if:
+									return token
 
-								
+								return 'No Valid Received'
 
 							except:
-								
+								return 'no valid received'
 
 						return 'No Code Received'
 
