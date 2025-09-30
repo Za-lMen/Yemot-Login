@@ -1,5 +1,6 @@
 from flask import Flask, request
 import os
+import requests
 import traceback
 app = Flask(__name__)
 
@@ -34,9 +35,9 @@ def login():
 			return token
 		return 'No Token Received'
 
-except Exception as e:
-	bug = f"Error type: {type(e).__name__}\nError message: {str(e)}\nTraceback: {traceback.format_exc()}"
-	return bug
+"""	except Exception as e:
+		bug = f"Error type: {type(e).__name__}\nError message: {str(e)}\nTraceback: {traceback.format_exc()}"
+		return bug"""
 
-#	except:
+	except:
 		return 'no token received'
