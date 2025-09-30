@@ -31,8 +31,10 @@ def login():
         reslogin = requests.get(urllogin)
         datlogin = reslogin.json()
         token = datlogin.get('token')
-        return reslogin
+        if token:
+            return token
+        return 'No Token Received'
 
     except:
         return 'no token received'
-        
+
