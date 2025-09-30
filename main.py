@@ -27,11 +27,12 @@ def login():
         return err.strip()
 
     urllogin = f'{baseurl}{logincon}?{numurl}&{pasurl}'
-    return urllogin
+    
     try:
         reslogin = requests.get(urllogin)
         datlogin = reslogin.json()
-        token = datlogin.get('token')
+#        token = datlogin.get('token')
+        token = str(datlogin)
         if token:
             return token
         return 'No Token Received'
