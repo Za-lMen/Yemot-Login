@@ -1,12 +1,12 @@
-from flask import Flask
+from flask import Flask, request
 import os
-# הוסף imports מהקוד המקורי שלך (למשל, import requests)
 app = Flask(__name__)
 @app.route('/')
-def hello():
-    # שים כאן את הפונקציונליות של הקוד המקורי
-    # דוגמה: אם הקוד המקורי מחזיר תוצאה, החזר אותה כ-string
-    result = 'Hello World from Python'  # החלף בתוצאה של הקוד שלך
-    return result
+def reverse_text():
+    # קבל את הפרמטר 'text' מה-URL (למשל, ?text=hello)
+    text = request.args.get('text', 'No text provided')
+    # החזר את הטקסט הפוך
+    reversed_text = text[::-1]
+    return f'Reversed text: {reversed_text}'
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
