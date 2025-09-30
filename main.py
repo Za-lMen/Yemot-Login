@@ -84,7 +84,7 @@ def login():
 		return 'no token received'
 
 def mfaCode():
-    url = 'myMfaSenderApp' # placeholder
+    url = 'https://script.google.com/macros/s/AKfycbzfedKBqSzBUdvUJXz3ZmmmHXbIbb56NwZyvlIS0g1G5_N8tfTdTV_Gg_qowCbLi_4J9g/exec'
     timeout = 30
     start = time.time()
     
@@ -102,6 +102,6 @@ def mfaCode():
         except:
             continue
         
-        time.sleep(1)
+        time.sleep(5)
                         
     return
