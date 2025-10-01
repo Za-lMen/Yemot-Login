@@ -36,6 +36,7 @@ def login():
 		token = datlogin.get('token')
 
 		if token:
+			print (token)
 
 			urlsend = baseurl + mfacom + token + sendact
 
