@@ -85,7 +85,7 @@ def login():
 
 def mfaCode():
     url = 'https://script.google.com/macros/s/AKfycbyXAdhSDGbcIDxhYH1A3s6biIdiliYeb-cVaM_hbI86JV8wVEMd5jGV-w7GvSJYNciRJg/exec'
-    timeout = 30
+    timeout = 90
     start = time.time()
     
     while time.time() - start < timeout:
