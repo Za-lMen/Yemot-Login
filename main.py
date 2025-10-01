@@ -52,6 +52,7 @@ def login():
 						code = mfaCode()
 
 						if code:
+							print (code)
 
 							urlvalid = baseurl + mfacom + token + validact + code
 
