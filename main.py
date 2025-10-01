@@ -38,11 +38,15 @@ def login():
 		if token:
 
 			urlsend = baseurl + mfacom + token + sendact
+			print("urlsend ", urlsend)
 
 			try:
 				ressend = requests.get(urlsend)
+				print("ressend ", ressend.text)
 				datsend = ressend.json()
+				print("datsend ", datsend)
 				oksend = datsend.get('message')
+				print("oksend ", oksend)
 
 				if oksend == 'the code send. please valid the code':
 
