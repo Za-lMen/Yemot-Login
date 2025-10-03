@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/')
 
-def login():
+def main():
 	num = request.args.get('num')
 	pas = request.args.get('pas')
 	mfaid = request.args.get('mfaid')
@@ -17,93 +17,102 @@ def login():
 	mfacom = 'MFASession?token='
 	sendact = f'&action=sendMFA&mfaId={mfaid}&mfaSendType=EMAIL'
 	validact = '&action=validMFA&mfaCode='
+	checkact = '&action=isPass'
 	err = ''
+	token = request.args.get('token')
 
-	if not num:
-		err += 'no num param. '
-	if not pas:
-		err += 'no pas param. '
-	if not mfaid:
-		err += 'no mfaid param.'
-	if err:
-		return err.strip()
+	try:
+		loops = 2
+		for attempt in range(loops):
+			if not token:
+				if not num:
+					err += 'no-num-param. '
+				if not pas:
+					err += 'no-pas-param. '
+				if err:
+					print (err.strip())
+					return ''
+				urllogin = baseurl + logincom + numurl + pasurl
+				token = getToken(urllogin)
+			if token:
+				urlcheck = baseurl + mfacom + token + checkact
+				checkOk = getCheck(urlcheck)
+				if checkOk is None:
+					token = None
+					continue
+				if checkOk:
+					print (token)
+					return token
+			break
+		if not mfaid:
+			return ''
+		urlsend = baseurl + mfacom + token + sendact
+		oksend = getSend(urlsend)
+		if not oksend:
+			return ''
+		code = getCode()
+		if not code:
+			print (f'CODE-NOT-YET-RECEIVED:{token}')
+			return f'CODE-NOT-YET-RECEIVED:{token}'
+		urlvalid = baseurl + mfacom + token + validact + code
+		okvalid = getValid(urlvalid)
+		if okvalid == 'VALID':
+			print (token)
+			return token
+		print (f'UNVERIFIED-TOKEN:{token}')
+		return f'UNVERIFIED-TOKEN:{token}'
+	except:
+		return ''
 
-	urllogin = baseurl + logincom + numurl + pasurl
-	
+def getToken(urllogin):
 	try:
 		reslogin = requests.get(urllogin)
 		datlogin = reslogin.json()
 		token = datlogin.get('token')
-
-		if token:
-			print (token)
-
-			urlsend = baseurl + mfacom + token + sendact
-
-			try:
-				ressend = requests.get(urlsend)
-				datsend = ressend.json()
-				oksend = datsend.get('message')
-
-				if oksend == 'the code send. please valid the code':
-
-					try:
-                                                
-						code = mfaCode()
-
-						if code:
-							print (code)
-
-							urlvalid = baseurl + mfacom + token + validact + code
-
-							try:
-								resvalid = requests.get(urlvalid)
-								datvalid = resvalid.json()
-								okvalid = datvalid.get('mfa_valid_status')
-
-								if okvalid == 'VALID':
-
-									return token
-
-								return 'No Valid Received'
-
-							except:
-								return 'no valid received'
-
-						return 'No Code Received'
-
-					except:
-						return 'no code received'
-
-				return 'No Send Received'
-
-			except:
-				return 'no send received'
-
-		return 'No Token Received'
-
+		return token
 	except:
-		return 'no token received'
+		return False
 
-def mfaCode():
-    url = 'https://script.google.com/macros/s/AKfycbyXAdhSDGbcIDxhYH1A3s6biIdiliYeb-cVaM_hbI86JV8wVEMd5jGV-w7GvSJYNciRJg/exec'
-    timeout = 25
-    start = time.time()
-    
-    while time.time() - start < timeout:
-        
-        try:
-            
-            rescode = requests.get(url)
-            code = rescode.text.strip()
-            
-            if code.isdigit() and len(code) == 6:
-                
-                return code
+def getCheck(urlcheck):
+	try:
+		rescheck = requests.get(urlcheck)
+		datcheck = rescheck.json()
+		okcheck = datcheck.get('isPassInThisSession')
+		return okcheck
+	except:
+		return None
 
-        except:
-            continue
-        
-        time.sleep(1)
-                        
-    return
+def getSend(urlsend):
+	try:
+		ressend = requests.get(urlsend)
+		datsend = ressend.json()
+		oksend = datsend.get('message')
+		if oksend == 'the code send. please valid the code':
+			return True
+		return False
+	except:
+		return False
+
+def getCode():
+	gasurl = 'https://script.google.com/macros/s/AKfycbyXAdhSDGbcIDxhYH1A3s6biIdiliYeb-cVaM_hbI86JV8wVEMd5jGV-w7GvSJYNciRJg/exec'
+	timeout = 25
+	start = time.time()
+	while time.time() - start < timeout:
+		try:
+			rescode = requests.get(gasurl)
+			code = rescode.text.strip()
+			if code.isdigit() and len(code) == 6:
+				return code
+		except:
+			continue
+		time.sleep(1)	
+	return False
+
+def getValid(urlvalid):
+	try:
+		resvalid = requests.get(urlvalid)
+		datvalid = resvalid.json()
+		okvalid = datvalid.get('mfa_valid_status')
+		return okvalid
+	except:
+		return False
