@@ -94,7 +94,7 @@ def getSend(urlsend):
 		return False
 
 def getCode():
-	gasurl = os.getenv('gasurl')
+	gasurl = os.getenv('GASURL')
 	timeout = 25
 	start = time.time()
 	while time.time() - start < timeout:
