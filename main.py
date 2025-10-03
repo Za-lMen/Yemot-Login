@@ -94,7 +94,7 @@ def getSend(urlsend):
 		return False
 
 def getCode():
-	gasurl = 'https://script.google.com/macros/s/AKfycbyXAdhSDGbcIDxhYH1A3s6biIdiliYeb-cVaM_hbI86JV8wVEMd5jGV-w7GvSJYNciRJg/exec'
+	gasurl = os.getenv('gasurl')
 	timeout = 25
 	start = time.time()
 	while time.time() - start < timeout:
