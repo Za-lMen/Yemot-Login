@@ -20,36 +20,44 @@ def main():
 	checkact = '&action=isPass'
 	err = ''
 	token = request.args.get('token')
+	retry = request.args.get('retry')
 
 	try:
-		loops = 2
-		for attempt in range(loops):
-			if not token:
-				if not num:
-					err += 'no-num-param. '
-				if not pas:
-					err += 'no-pas-param. '
-				if err:
-					print (err.strip())
-					return ''
-				urllogin = baseurl + logincom + numurl + pasurl
-				token = getToken(urllogin)
-			if token:
-				urlcheck = baseurl + mfacom + token + checkact
-				checkOk = getCheck(urlcheck)
-				if checkOk is None:
-					token = None
-					continue
-				if checkOk:
-					print (token)
-					return token
-			break
-		if not mfaid:
-			return ''
-		urlsend = baseurl + mfacom + token + sendact
-		oksend = getSend(urlsend)
-		if not oksend:
-			return ''
+		if retry:
+			urlcheck = baseurl + mfacom + token + checkact
+			checkOk = getCheck(urlcheck)
+			if checkOk is None:
+				token = None
+				retry = None
+		if not retry:
+			loops = 2
+			for attempt in range(loops):
+				if not token:
+					if not num:
+						err += 'no-num-param. '
+					if not pas:
+						err += 'no-pas-param. '
+					if err:
+						print (err.strip())
+						return ''
+					urllogin = baseurl + logincom + numurl + pasurl
+					token = getToken(urllogin)
+				if token:
+					urlcheck = baseurl + mfacom + token + checkact
+					checkOk = getCheck(urlcheck)
+					if checkOk is None:
+						token = None
+						continue
+					if checkOk:
+						print (token)
+						return token
+				break
+			if not mfaid:
+				return ''
+			urlsend = baseurl + mfacom + token + sendact
+			oksend = getSend(urlsend)
+			if not oksend:
+				return ''
 		code = getCode()
 		if not code:
 			print (f'CODE-NOT-YET-RECEIVED:{token}')
