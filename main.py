@@ -49,7 +49,7 @@ def main():
 						token = None
 						continue
 					if checkOk:
-						print (token)
+						print ('{token}')
 						return token
 				break
 			if not mfaid:
@@ -60,14 +60,14 @@ def main():
 				return ''
 		code = getCode()
 		if not code:
-			print (f'CODE-NOT-YET-RECEIVED:{token}')
+			print ('CODE-NOT-YET-RECEIVED:{token}')
 			return f'CODE-NOT-YET-RECEIVED:{token}'
 		urlvalid = baseurl + mfacom + token + validact + code
 		okvalid = getValid(urlvalid)
 		if okvalid == 'VALID':
-			print (token)
+			print ('{toke'}')
 			return token
-		print (f'UNVERIFIED-TOKEN:{token}')
+		print ('UNVERIFIED-TOKEN:{token}')
 		return f'UNVERIFIED-TOKEN:{token}'
 	except:
 		return ''
