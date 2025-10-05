@@ -53,6 +53,7 @@ def main():
 						return token
 				break
 			if not mfaid:
+				print ('no-mfaid-param.')
 				return ''
 			urlsend = baseurl + mfacom + token + sendact
 			oksend = getSend(urlsend)
