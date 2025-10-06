@@ -102,19 +102,19 @@
 ### קריאה ראשונה (ללא טוקן):
 
 ```bash
-GET /?num=12345&pas=abcd123&mfaid=6789
+GET /?num=0777777777&pas=1234567&mfaid=2
 ```
 
 ### קריאה עם טוקן קיים:
 
 ```bash
-GET /?token=xyz987&mfaid=6789
+GET /?token=xyz987&mfaid=2
 ```
 
 ### קריאה עם טוקן שאולי לא תקף:
 
 ```bash
-GET /?token=xyz987&num=12345&pas=abcd123&mfaid=6789
+GET /?token=xyz987&num=0777777777&pas=1234567&mfaid=2
 ```
 
 ---
@@ -173,19 +173,19 @@ GASURL
 #### 📥 יצירת טוקן חדש ואימות ראשוני:
 
 ```bash
-GET /?num=12345&pas=abcd123&mfaid=6789
+GET /?num=0777777777&pas=1234567&mfaid=2
 ```
 
 #### 🔄 בדיקת טוקן קיים:
 
 ```bash
-GET /?token=xyz987&mfaid=6789
+GET /?token=xyz987&mfaid=2
 ```
 
 #### 🧠 שימוש משולב (בדיקת טוקן ויצירת חדש במידת הצורך):
 
 ```bash
-GET /?token=xyz987&num=12345&pas=abcd123&mfaid=6789
+GET /?token=xyz987&num=0777777777&pas=1234567&mfaid=2
 ```
 
 ---
